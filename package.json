@@ -1,12 +1,28 @@
 {
-  "name": "package",
-  "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
+  "name": "blinkkit",
+  "version": "0.1.0",
+  "description": "A lightweight, type-safe SDK for building Solana Blinks on Node.js using Hono.",
+  "license": "MIT",
   "author": "",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "tsx watch examples/basic-server.ts",
+    "start:example": "tsx examples/basic-server.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.8",
+    "@resvg/resvg-js": "^2.6.2",
+    "@solana/web3.js": "^1.98.0",
+    "hono": "^4.7.4",
+    "satori": "^0.12.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
   }
 }
