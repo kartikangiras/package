@@ -1,5 +1,3 @@
-
-
 import { z } from "zod";
 import {
   Connection,
@@ -26,7 +24,6 @@ const donateAction = createAction({
   handler: async ({ account, validatedInput }) => {
     const { amount } = validatedInput;
 
-    // Build a simple SOL transfer transaction
     const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
     const sender = new PublicKey(account);
     const recipient = new PublicKey("11111111111111111111111111111111");
@@ -42,8 +39,6 @@ const donateAction = createAction({
     const { blockhash } = await connection.getLatestBlockhash();
     transaction.recentBlockhash = blockhash;
     transaction.feePayer = sender;
-
-    // Serialise as base-64 (the wallet will sign on the client side)
     const serialized = transaction
       .serialize({ requireAllSignatures: false })
       .toString("base64");
@@ -56,13 +51,11 @@ const donateAction = createAction({
 });
 
 const server = new BlinkServer();
-
-// Register the donate action (auto-creates GET + POST /donate)
 server.register(donateAction);
 
 
 server.app.get("/image", async (c) => {
-  const png = await generateBlinkImage("🎉 Hello World — BlinkKit");
+  const png = await generateBlinkImage("BlinkKit");
   return new Response(png, {
     headers: {
       "Content-Type": "image/png",
@@ -71,10 +64,6 @@ server.app.get("/image", async (c) => {
   });
 });
 
-// ─── 4. Serve actions.json for wallet discovery ─────────────────────────────
-
 server.serveActionsJson("http://localhost:3000");
-
-// ─── 5. Start! ──────────────────────────────────────────────────────────────
 
 server.start(3000);

@@ -3,16 +3,9 @@ import { serve } from "@hono/node-server";
 import type { BlinkAction } from "./action.js";
 import type { ActionPostRequest, ActionError } from "./types.js";
 
-// ────────────────────────────────────────────────────────────────────────────────
-// Constants
-// ────────────────────────────────────────────────────────────────────────────────
-
 const SOLANA_ACTION_VERSION = "1";
 const BLOCKCHAIN_IDS = "solana:mainnet";
 
-// ────────────────────────────────────────────────────────────────────────────────
-// BlinkServer
-// ────────────────────────────────────────────────────────────────────────────────
 
 export class BlinkServer {
   public readonly app: Hono;
@@ -23,12 +16,8 @@ export class BlinkServer {
     this.setupCors();
   }
 
-  // ──── CORS Middleware ──────────────────────────────────────────────────────
-
   private setupCors(): void {
-    // Preflight + every response
     this.app.use("*", async (c, next) => {
-      // Handle preflight OPTIONS
       if (c.req.method === "OPTIONS") {
         return new Response(null, {
           status: 204,
@@ -38,7 +27,6 @@ export class BlinkServer {
 
       await next();
 
-      // Attach CORS + Solana Action headers to every response
       const headers = this.corsHeaders();
       for (const [key, value] of Object.entries(headers)) {
         c.res.headers.set(key, value);
@@ -57,23 +45,15 @@ export class BlinkServer {
     };
   }
 
-  // ──── Action Registration ─────────────────────────────────────────────────
-
-  /**
-   * Register a `BlinkAction` and auto-generate its GET (metadata) and
-   * POST (transaction) routes.
-   */
   register(action: BlinkAction): this {
     this.actions.push(action);
 
     const path = action.path;
 
-    // GET — returns Action metadata JSON (Solana Actions spec)
     this.app.get(path, (c) => {
       return c.json(action.getMetadata());
     });
 
-    // POST — validate, run handler, return transaction
     this.app.post(path, async (c) => {
       try {
         const body = (await c.req.json()) as ActionPostRequest & Record<string, unknown>;
@@ -84,7 +64,6 @@ export class BlinkServer {
           return c.json(err, 400);
         }
 
-        // Validate input through Zod schema if the action defines one
         const dataToValidate = body.data ?? body;
         const validation = action.validateInput(dataToValidate);
 
@@ -108,19 +87,9 @@ export class BlinkServer {
     return this;
   }
 
-  // ──── Direct route helpers ────────────────────────────────────────────────
-
-  /** Expose the underlying Hono app for custom routes. */
   get hono(): Hono {
     return this.app;
   }
-
-  // ──── actions.json ────────────────────────────────────────────────────────
-
-  /**
-   * Serve an `actions.json` manifest at the well-known path that
-   * wallets use for discovery.
-   */
   serveActionsJson(baseUrl: string): this {
     const rules = this.actions.map((a) => ({
       pathPattern: a.path,
@@ -131,13 +100,6 @@ export class BlinkServer {
     return this;
   }
 
-  // ──── Start ───────────────────────────────────────────────────────────────
-
-  /**
-   * Start the HTTP server.
-   *
-   * @param port - Port number (default `3000`)
-   */
   start(port: number = 3000): void {
     serve(
       { fetch: this.app.fetch, port },
