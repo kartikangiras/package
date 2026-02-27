@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "pathPattern": "/*",
+      "apiPath": "/api/mint"
+    },
+    {
+      "pathPattern": "/api/mint",
+      "apiPath": "/api/mint"
+    }
+  ]
+}

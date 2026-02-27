@@ -37,18 +37,18 @@ program.action(async () => {
       default: 'my-solana-blink',
     },
     {
-      type: 'input',
-      name: 'treasuryWallet',
-      message: 'Enter the destination wallet address (to receive funds):',
-      when: (answers) => answers.templateType === 'donation',
-      validate: (input) => input.length >= 32 || 'Please enter a valid Solana public key.',
+    type: 'input',
+    name: 'treasuryWallet',
+    message: 'Enter the destination wallet address (to receive funds):',
+    when: (answers) => answers.templateType === 'donation',
+    validate: (input) => input.length >= 32 || 'Please enter a valid Solana public key.',
     },
     {
-            type: 'input',
-            name: 'candyMachineID',
-            message: 'Enter your Metaplex Candy Machine Id:',
-            when: (answers) => answers.templateType === 'nft-mint',
-            validate: (input) => input.length >= 32 || 'Please enter a valid Solana public key'
+    type: 'input',
+    name: 'candyMachineID',
+    message: 'Enter your Metaplex Candy Machine Id:',
+    when: (answers) => answers.templateType === 'nft-mint',
+    validate: (input) => input.length >= 32 || 'Please enter a valid Solana public key'
         }
   ]);
 
@@ -61,7 +61,8 @@ program.action(async () => {
   try {
     await fs.copy(templatePath, targetPath);
 
-    const routePath = path.join(targetPath, 'app/api/donate/route.ts');
+    if (answers.templateType == 'donation') {
+    const routePath = path.join(targetPath, 'app/api/index.ts');
     
     if (await fs.pathExists(routePath)) {
       let routeContent = await fs.readFile(routePath, 'utf8');
@@ -72,6 +73,21 @@ program.action(async () => {
       );
       
       await fs.writeFile(routePath, routeContent);
+    } }
+
+    else if (answers.templateType == 'nft-mint') {
+        const routePath = path.join(targetPath, '');
+
+        if (await fs.pathExists(routePath)) {
+            let routeContent = await fs.readFile(routePath, 'utf-8');
+
+            routeContent = routeContent.replace(
+                '{{CANDY_MACHINE_ID}}',
+                answers.candyMachineId
+            );
+
+            await fs.writeFile(routePath, routeContent)
+        }
     }
 
     console.log(chalk.green('\n✅ Success! Your production-ready Blink is generated.'));
