@@ -22,11 +22,11 @@ npx solwink@latest
 ## ✨ Why SolWink?
 Building Solana Blinks should be fun, not frustrating. SolWink focuses on Developer Velocity:
 
-Zero-Config Express Backend: We ditched the heavy frontend frameworks. SolWink generates pure, lightweight Node.js/Express servers designed exclusively for API route handling.
+Zero-Config Express Backend: We ditched the heavy frontend frameworks. SolWink generates pure, lightweight Express servers designed exclusively for API route handling.
 
 Bulletproof CORS & Headers: Pre-configured with the exact X-Action-Version and Access-Control-Allow-Origin headers required by the Dialect validator.
 
-Dynamic Network Selection: Choose between Mainnet-Beta or Devnet via interactive CLI dropdowns. SolWink automatically maps and injects the correct Genesis Hash / Chain ID into your project.
+Dynamic Network Selection: Choose between Mainnet or Devnet via interactive CLI dropdowns. SolWink automatically maps and injects the correct Chain ID into your project.
 
 Smart Variable Injection: The CLI prompts you for your Treasury Wallet or Candy Machine ID and securely injects them directly into the generated codebase.
 
@@ -51,26 +51,26 @@ Templates (under development)
 
 We are actively expanding the SolWink template library to become the standard scaffolding tool for Solana Actions:
 
-**SPL Token Transfer**
+**3. SPL Token Transfer**
 
  Support for sending USDC, BONK, and other custom tokens.
 
-**Jupiter Swaps**
+**4. Jupiter Swaps**
 
  Direct token-to-token swaps right inside the Blink.
 
-**DAO Governance**
+**5. DAO Governance**
 
  On-chain voting for Realms/Snapshot.
 
-**Token Gating**
+**6. Token Gating**
 
  A Blink that checks if you own a specific NFT. If you do, it reveals a "Claim" button for a discount code or secret link.
 
 
 ## 📁 Generated Architecture
 
-SolWink generates a clean, "Headless" backend structure that is easy to deploy to Render, Railway, or Heroku:
+SolWink generates a clean, Headless backend structure that is easy to deploy to Render, Railway, or Heroku:
 
 
 Developed by Kartik Angiras with ♥️ for Solana community.
