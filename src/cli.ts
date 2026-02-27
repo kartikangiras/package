@@ -33,7 +33,7 @@ program.action(async () => {
     {
       type: 'input',
       name: 'projectName',
-      message: 'What is the name of your Next.js project?',
+      message: 'What is the name of your project?',
       default: 'my-solana-blink',
     },
     {
@@ -62,7 +62,7 @@ program.action(async () => {
     await fs.copy(templatePath, targetPath);
 
     if (answers.templateType == 'donation') {
-    const routePath = path.join(targetPath, 'app/api/index.ts');
+    const routePath = path.join(targetPath, 'api/index.ts');
     
     if (await fs.pathExists(routePath)) {
       let routeContent = await fs.readFile(routePath, 'utf8');
@@ -76,14 +76,14 @@ program.action(async () => {
     } }
 
     else if (answers.templateType == 'nft-mint') {
-        const routePath = path.join(targetPath, '');
+        const routePath = path.join(targetPath, 'api/index.ts');
 
         if (await fs.pathExists(routePath)) {
             let routeContent = await fs.readFile(routePath, 'utf-8');
 
             routeContent = routeContent.replace(
                 '{{CANDY_MACHINE_ID}}',
-                answers.candyMachineId
+                answers.candyMachineID
             );
 
             await fs.writeFile(routePath, routeContent)

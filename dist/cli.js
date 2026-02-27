@@ -21,6 +21,7 @@ program.action(async () => {
             message: 'Which Blink template would you like to scaffold?',
             choices: [
                 { name: '💰 SOL Donation (Crowdfund)', value: 'donation' },
+                { name: '🖼️ NFT Mint (Metaplex Candy Machine', value: 'nft-mint' }
             ]
         },
         {
@@ -33,7 +34,15 @@ program.action(async () => {
             type: 'input',
             name: 'treasuryWallet',
             message: 'Enter the destination wallet address (to receive funds):',
+            when: (answers) => answers.templateType === 'donation',
             validate: (input) => input.length >= 32 || 'Please enter a valid Solana public key.',
+        },
+        {
+            type: 'input',
+            name: 'candyMachineID',
+            message: 'Enter your Metaplex Candy Machine Id:',
+            when: (answers) => answers.templateType === 'nft-mint',
+            validate: (input) => input.length >= 32 || 'Please enter a valid Solana public key'
         }
     ]);
     const targetPath = path.join(process.cwd(), answers.projectName);
@@ -41,11 +50,21 @@ program.action(async () => {
     console.log(chalk.blue(`\nScaffolding ${answers.templateType} Blink in ${targetPath}...`));
     try {
         await fs.copy(templatePath, targetPath);
-        const routePath = path.join(targetPath, 'app/api/donate/route.ts');
-        if (await fs.pathExists(routePath)) {
-            let routeContent = await fs.readFile(routePath, 'utf8');
-            routeContent = routeContent.replace('{{TREASURY_WALLET}}', answers.treasuryWallet);
-            await fs.writeFile(routePath, routeContent);
+        if (answers.templateType == 'donation') {
+            const routePath = path.join(targetPath, 'api/index.ts');
+            if (await fs.pathExists(routePath)) {
+                let routeContent = await fs.readFile(routePath, 'utf8');
+                routeContent = routeContent.replace('{{TREASURY_WALLET}}', answers.treasuryWallet);
+                await fs.writeFile(routePath, routeContent);
+            }
+        }
+        else if (answers.templateType == 'nft-mint') {
+            const routePath = path.join(targetPath, 'api/index.ts');
+            if (await fs.pathExists(routePath)) {
+                let routeContent = await fs.readFile(routePath, 'utf-8');
+                routeContent = routeContent.replace('{{CANDY_MACHINE_ID}}', answers.candyMachineID);
+                await fs.writeFile(routePath, routeContent);
+            }
         }
         console.log(chalk.green('\n✅ Success! Your production-ready Blink is generated.'));
         console.log(chalk.yellow(`\nNext steps:\n  cd ${answers.projectName}\n  npm install\n  npm run dev\n`));
