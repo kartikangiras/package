@@ -12,12 +12,14 @@ Also it is the most pivotal project for Web2 Devs who want to become Web3 develo
 
 ## ⚡ Quick Start
 
-You don't need to install anything globally. Scaffold your first Blink instantly using `npx`:
+You don't need to install anything globally. Scaffold your first Blink instantly using `npx` or traditional `npm`:
 
 ```bash
 npx create-solwink@latest
 # or
 npx solwink@latest
+#or
+npm i solwink-cli
 ```
 ## ✨ Why SolWink?
 Building Solana Blinks should be fun, not frustrating. SolWink focuses on Developer Velocity:
