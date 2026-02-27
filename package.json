@@ -9,7 +9,9 @@
   },
   "files": [
     "dist",
-    "templates"
+    "templates",
+    "src",
+    "README.md"
   ],
   "scripts": {
     "build": "tsc",
