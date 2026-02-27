@@ -1,6 +1,6 @@
 {
   "name": "solwink-cli",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "The ultimate interactive CLI to scaffold Solana Blinks and Actions",
   "type": "module",
   "bin": {
