@@ -35,6 +35,8 @@ You don't need to install anything globally. Scaffold your first Blink instantly
 npx solwink-cli@latest
 #or
 npm i solwink-cli
+#then 
+solwink (only for npm command)
 ```
 
 ## 💻 Use Cases
