@@ -15,9 +15,7 @@ Also it is the most pivotal project for Web2 Devs who want to become Web3 develo
 You don't need to install anything globally. Scaffold your first Blink instantly using `npx` or traditional `npm`:
 
 ```bash
-npx create-solwink@latest
-# or
-npx solwink@latest
+npx solwink-cli@latest
 #or
 npm i solwink-cli
 ```
